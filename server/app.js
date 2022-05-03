@@ -32,7 +32,7 @@ module.exports = (config) => {
 
   app.use("/", routes({ speakers, feedback }));
 
-  //catch error 404 and forward to error handle
+  //catch error 404 and forward to error handler
   app.use((req, res, next) => {
     next(createError(404));
   });
