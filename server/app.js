@@ -9,7 +9,7 @@ const FeedbackService = require("./services/FeedbackService");
 module.exports = (config) => {
   const app = express();
   const speakers = new SpeakerService(config.data.speakers);
-  const feedback = new FeedbackService(config.data.feedback);
+  // const feedback = new FeedbackService(config.data.feedback);
   app.set("view engine", "pug");
   app.set("views", path.join(__dirname, "./views"));
 
@@ -22,15 +22,15 @@ module.exports = (config) => {
 
   app.use(async (req, res, next) => {
     try {
-      const names = await speakers.getNames();
-      res.locals.speakerNames = names;
+      // const names = await speakers.getNames();
+      // res.locals.speakerNames = names;
       return next();
     } catch (err) {
       return next(err);
     }
   });
 
-  app.use("/", routes({ speakers, feedback }));
+  app.use("/", routes({ speakers }));
 
   //catch error 404 and forward to error handler
   app.use((req, res, next) => {

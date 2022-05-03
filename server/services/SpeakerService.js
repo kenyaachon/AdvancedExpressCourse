@@ -20,6 +20,27 @@ class SpeakerService {
       shortname: speaker.shortname,
     }));
   }
+
+  async getList() {
+    const data = await this.getData();
+    return data.map((speaker) => ({
+      name: speaker.name,
+      shortname: speaker.shortname,
+      title: speaker.title,
+      summary: speaker.summary,
+    }));
+  }
+
+  async getAllArtwork() {
+    const data = await this.getData();
+    const artwork = data.reduce((acc, elm) => {
+      if ((elm, artwork)) {
+        return [...acc, ...elm.artwork];
+      }
+      return acc;
+    }, []);
+    return artwork;
+  }
 }
 
 module.exports = SpeakerService;

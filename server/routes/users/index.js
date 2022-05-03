@@ -5,7 +5,7 @@ const router = express.Router();
 module.exports = () => {
   router.get("/registration", (req, res) =>
     res.render("users/registration", {
-      success: req.success,
+      success: req.query.success,
     })
   );
 
