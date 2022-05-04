@@ -22,8 +22,8 @@ module.exports = (config) => {
 
   app.use(async (req, res, next) => {
     try {
-      // const names = await speakers.getNames();
-      // res.locals.speakerNames = names;
+      const names = await speakers.getNames();
+      res.locals.speakerNames = names;
       return next();
     } catch (err) {
       return next(err);
