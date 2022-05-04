@@ -8,6 +8,17 @@ class FeedbackService {
   constructor(datafile) {
     this.datafile = datafile;
   }
+
+  async getList() {
+    const data = await this.getData();
+    return data;
+  }
+
+  async getData() {
+    const data = await readFile(this.datafile, "utf8");
+    if (!data) return [];
+    return JSON.parse(data);
+  }
 }
 
 module.exports = FeedbackService;

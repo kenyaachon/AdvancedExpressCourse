@@ -26,8 +26,8 @@ header
               each speaker in speakerNames
                 li
                   a(href=`/speakers/${speaker.shortname}`)=speaker.name
-          //- li
-          //-   a(href='/feedback') Feedback
+          li
+            a(href='/feedback') Feedback
 
           li
             a.dropdown-toggle(href='/users', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')
