@@ -19,6 +19,12 @@ class FeedbackService {
     if (!data) return [];
     return JSON.parse(data);
   }
+
+  async addEntry(name, title, message) {
+    const data = (await this.getData()) || [];
+    data.unshift({ name, title, message });
+    return writeFile(this.datafile, JSON.stringify(data));
+  }
 }
 
 module.exports = FeedbackService;
