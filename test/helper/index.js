@@ -7,6 +7,13 @@ const util = require("util");
 let AvatarService = null;
 let db = null;
 
+try {
+  // eslint-disable-next-line import/no-unresolved
+  AvatarService = require("../../server/services/AvatarService");
+} catch (err) {
+  console.log("Avatars ignored");
+}
+
 //configuration
 const config = require("../../server/config").test;
 
@@ -31,6 +38,5 @@ module.exports.before = () => {
 };
 
 module.exports.after = () => {
-  //   return deleteFilesInDir(config.data.avatars);
-  return true;
+  return deleteFilesInDir(config.data.avatars);
 };

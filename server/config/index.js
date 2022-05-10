@@ -30,7 +30,7 @@ module.exports = {
     data: {
       speakers: path.join(__dirname, "../data/speakers.json"),
       feedback: path.join(__dirname, "../data/feedback.json"),
-      avatars: path.join(__dirname, "../data/avatars"),
+      avatars: path.join(__dirname, "../data/avatars/test"),
     },
     database: {
       dsn: process.env.TEST_DB_DSN,

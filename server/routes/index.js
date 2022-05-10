@@ -5,6 +5,7 @@ const router = express.Router();
 //Require the index file
 const speakersRoute = require("./speakers");
 const feedbackRoute = require("./feedback");
+const usersRoute = require("./users");
 
 module.exports = (params) => {
   // Destructuring assignment
@@ -20,5 +21,6 @@ module.exports = (params) => {
   //And mount it to the path speakers
   router.use("/speakers", speakersRoute(params));
   router.use("/feedback", feedbackRoute(params));
+  router.use("/users", usersRoute(params));
   return router;
 };

@@ -24,4 +24,9 @@ describe("The Application", () => {
     const res = await chai.request(app).get("/feedback");
     res.should.have.status(200);
   });
+
+  it("should have a registration route", async () => {
+    const res = await chai.request(app).get("/users/registration");
+    res.should.have.status(200);
+  });
 });
