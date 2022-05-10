@@ -6,6 +6,21 @@ const util = require("util");
 
 let AvatarService = null;
 let db = null;
+let UserModel = null;
+
+try {
+  // eslint-disable-next-line import/no-unresolved
+  db = require("../../server/lib/db");
+} catch (err) {
+  console.log("db ignored");
+}
+
+try {
+  // eslint-disable-next-line import/no-unresolved
+  UserModel = require("../../server/models/UserModel");
+} catch (err) {
+  console.log("UserModel ignored");
+}
 
 try {
   // eslint-disable-next-line import/no-unresolved
@@ -31,12 +46,41 @@ async function deleteFilesInDir(directory) {
 }
 
 module.exports.AvatarService = AvatarService;
+module.exports.AvatarService = AvatarService;
 module.exports.config = config;
 
-module.exports.before = () => {
+module.exports.validUser = {
+  username: "Jason",
+  email: "jason@acme.org",
+  password: "supersecret",
+};
+module.exports.before = async () => {
+  if (db) {
+    await db.connect(config.database.dsn);
+  }
+  if (UserModel) {
+    return UserModel.deleteMany({});
+  }
   return true;
 };
 
-module.exports.after = () => {
+module.exports.after = async () => {
+  if (UserModel) {
+    await UserModel.deleteMany({});
+  }
   return deleteFilesInDir(config.data.avatars);
 };
+
+// Local helper function that creates a user
+module.exports.createUser = async (agent, user) =>
+  agent
+    .post("/users/registration")
+    .set("content-type", "application/x-www-form-urlencoded")
+    .send(user);
+
+// Local helper function that logs a user in
+module.exports.loginUser = async (agent, email, password) =>
+  agent
+    .post("/users/login")
+    .set("content-type", "application/x-www-form-urlencoded")
+    .send({ email, password });
