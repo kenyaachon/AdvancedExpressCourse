@@ -45,7 +45,7 @@ async function deleteFilesInDir(directory) {
   return Promise.all(fileProm);
 }
 
-module.exports.AvatarService = AvatarService;
+module.exports.UserModel = UserModel;
 module.exports.AvatarService = AvatarService;
 module.exports.config = config;
 
