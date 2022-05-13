@@ -8,6 +8,7 @@ const http = require("http");
 const config =
   require("../server/config")[process.env.NODE_ENV || "development"];
 const app = require("../server/app")(config);
+const db = require("../server/lib/db");
 
 //Helper functions
 
@@ -42,8 +43,18 @@ app.set("port", port);
 // Create HTTP server and listen on the provided port
 const server = http.createServer(app);
 
+//connect to the database before accepting requests
+db.connect(config.database.dsn)
+  .then(() => {
+    console.log("Connected to MongoDB");
+    server.listen(port);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
 //initialize the server
-server.listen(port);
+// server.listen(port);
 server.on("listening", () => {
   const addr = server.address();
   const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
