@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const createError = require("http-errors");
 const bodyParser = require("body-parser");
 const routes = require("./routes");
+const auth = require("./lib/auth");
 const SpeakerService = require("./services/SpeakerService");
 const FeedbackService = require("./services/FeedbackService");
 const mongoose = require("mongoose");
@@ -34,9 +35,14 @@ module.exports = (config) => {
       store: new MongoStore({ mongooseConnection: mongoose.connection }),
     })
   );
+
+  //authentication middleware
+  app.use(auth.initialize);
+  app.use(auth.session);
+  app.use(auth.setUser);
+
   app.use(async (req, res, next) => {
     try {
-      req.session.visits = req.session.visits ? req.session.visits + 1 : 1;
       const names = await speakers.getNames();
       res.locals.speakerNames = names;
       return next();
