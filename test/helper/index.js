@@ -64,6 +64,7 @@ module.exports.before = async () => {
   return true;
 };
 
+//used for resetting the database after each test
 module.exports.after = async () => {
   if (UserModel) {
     await UserModel.deleteMany({});
