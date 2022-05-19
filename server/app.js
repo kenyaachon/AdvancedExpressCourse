@@ -23,6 +23,7 @@ module.exports = (config) => {
   app.locals.title = config.sitename;
 
   app.use("/", express.static(path.join(__dirname, "../public")));
+
   app.get("/favicon.ico", (req, res) => res.sendStatus(204));
 
   app.use(bodyParser.urlencoded({ extended: true }));

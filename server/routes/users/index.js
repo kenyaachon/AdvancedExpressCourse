@@ -79,5 +79,16 @@ module.exports = (params) => {
       })
   );
 
+  router.get("/avatar/:filename", (req, res) => {
+    res.type("png");
+    return res.sendFile(avatars.filepath(req.params.filename));
+  });
+
+  router.get("/avatartn/:filename", async (req, res) => {
+    res.type("png");
+    const thumbnail = await avatars.thumbnail(req.params.filename);
+    return res.end(thumbnail, "binary");
+  });
+
   return router;
 };
