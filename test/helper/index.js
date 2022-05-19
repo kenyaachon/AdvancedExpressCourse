@@ -26,6 +26,7 @@ try {
   // eslint-disable-next-line import/no-unresolved
   AvatarService = require("../../server/services/AvatarService");
 } catch (err) {
+  console.log(err);
   console.log("Avatars ignored");
 }
 

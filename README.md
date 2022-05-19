@@ -1,5 +1,9 @@
 # AdvancedExpressCourse
 
+sample user: Sarah
+blackychan@gmail.com
+password hellohello#1
+
 ## Express
 
 Used middleware such as body-parser and http-errors
