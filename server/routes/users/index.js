@@ -10,7 +10,8 @@ const redirectIfLoggedIn = (req, res, next) => {
   if (req.user) return res.redirect("/users/account");
   return next();
 };
-module.exports = () => {
+module.exports = (params) => {
+  const { avatars } = params;
   router.post(
     "/login",
     passport.authenticate("local", {
@@ -39,6 +40,7 @@ module.exports = () => {
   router.post(
     "/registration",
     middleware.upload.single("avatar"),
+    middleware.handleAvatar(avatars),
     async (req, res, next) => {
       try {
         const user = new UserModel({
@@ -47,11 +49,17 @@ module.exports = () => {
           password: req.body.password,
         });
 
+        if (req.file && req.file.storedFilename) {
+          user.avatar = req.file.storedFilename;
+        }
         //save() is a built-in function from mongo
         const savedUser = await user.save();
         if (savedUser) return res.redirect("/users/registration?success=true");
         return next(new Error("Failed to save user for unknown reasons"));
       } catch (err) {
+        if (req.file && req.file.storedFilename) {
+          await avatars.delete(req.file.storedFilename);
+        }
         return next(err);
       }
     }

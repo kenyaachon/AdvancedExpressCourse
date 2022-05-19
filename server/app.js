@@ -10,11 +10,13 @@ const auth = require("./lib/auth");
 const SpeakerService = require("./services/SpeakerService");
 const FeedbackService = require("./services/FeedbackService");
 const mongoose = require("mongoose");
+const AvatarService = require("./services/AvatarService");
 
 module.exports = (config) => {
   const app = express();
   const speakers = new SpeakerService(config.data.speakers);
   const feedback = new FeedbackService(config.data.feedback);
+  const avatars = new AvatarService(config.data.avatars);
   app.set("view engine", "pug");
   app.set("views", path.join(__dirname, "./views"));
 
@@ -51,7 +53,7 @@ module.exports = (config) => {
     }
   });
 
-  app.use("/", routes({ speakers, feedback }));
+  app.use("/", routes({ speakers, feedback, avatars }));
 
   //catch error 404 and forward to error handler
   app.use((req, res, next) => {
