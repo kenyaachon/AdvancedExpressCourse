@@ -5,12 +5,16 @@
  */
 
 const http = require("http");
+const cluster = require("cluster");
+const os = require("os");
 const config =
   require("../server/config")[process.env.NODE_ENV || "development"];
 const app = require("../server/app")(config);
 const db = require("../server/lib/db");
 
 const log = config.log();
+
+const numCPUs = os.cpus().length;
 
 //Helper functions
 
@@ -45,15 +49,30 @@ app.set("port", port);
 // Create HTTP server and listen on the provided port
 const server = http.createServer(app);
 
-//connect to the datfabase before accepting requests
-db.connect(config.database.dsn)
-  .then(() => {
-    log.info("Connected to MongoDB");
-    server.listen(port);
-  })
-  .catch((err) => {
-    log.fatal(err);
+//logic for clustering
+// the master process is the one which starts first
+if (cluster.isMaster) {
+  log.info(`Master ${process.pid} is running`);
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on("exit", (worker) => {
+    log.fata(`Worker ${worker.process.pid} just died`);
+    //create a worker in case the other workers fail
+    cluster.fork();
   });
+} else {
+  //connect to the datfabase before accepting requests
+  db.connect(config.database.dsn)
+    .then(() => {
+      log.info("Connected to MongoDB");
+      server.listen(port);
+    })
+    .catch((err) => {
+      log.fatal(err);
+    });
+}
 
 //initialize the server
 // server.listen(port);
