@@ -35,6 +35,8 @@ run npm test
 For improving the performance of the application, user sessions and data are cached in cookies,
 We replaced the console.log() with a logger called bunyan which is asynchronous versus console.log() which is a synchronoous function
 
+For reducing the size of files during loading, we used the module compression, which compresses response bodies for all requests that traverse through the middleware
+
 For testing the performance of the application:
 We used the Apache Benchmark tool,
 -c concurrency Number of multiple requests to make at a time
