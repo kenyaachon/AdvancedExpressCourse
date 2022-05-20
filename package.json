@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon bin/www.js",
+    "start": "node bin/www | bunyan",
     "test": "npx mocha --exit --recursive test/"
   },
   "author": "Moses Mbugua",
@@ -12,6 +12,8 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.0",
+    "bunyan": "^1.8.15",
+    "compression": "^1.7.4",
     "connect-mongo": "^3.2.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.0",

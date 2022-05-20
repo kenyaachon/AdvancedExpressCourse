@@ -10,6 +10,8 @@ const config =
 const app = require("../server/app")(config);
 const db = require("../server/lib/db");
 
+const log = config.log();
+
 //Helper functions
 
 /**
@@ -43,14 +45,14 @@ app.set("port", port);
 // Create HTTP server and listen on the provided port
 const server = http.createServer(app);
 
-//connect to the database before accepting requests
+//connect to the datfabase before accepting requests
 db.connect(config.database.dsn)
   .then(() => {
-    console.log("Connected to MongoDB");
+    log.info("Connected to MongoDB");
     server.listen(port);
   })
   .catch((err) => {
-    console.error(err);
+    log.fatal(err);
   });
 
 //initialize the server
@@ -58,7 +60,7 @@ db.connect(config.database.dsn)
 server.on("listening", () => {
   const addr = server.address();
   const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
-  console.log(`Listening on ${bind}`);
+  log.info(`Listening on ${bind}`);
 });
 
 //Handle server errors
@@ -72,15 +74,15 @@ server.on("error", (error) => {
   //handle specific listen errors with friendly messages
   switch (error.code) {
     case "EACCES":
-      console.error(`${bind} requires elevated privilages`);
+      log.fatal(`${bind} requires elevated privilages`);
       process.exit(1);
       break;
     case "EADDRINUSE":
-      console.error(`${bind} is already in use`);
+      log.fatal(`${bind} is already in use`);
       process.exit(1);
       break;
     default:
-      console.log(error);
+      log.info(error);
     //throw error
   }
 });
