@@ -17,7 +17,7 @@ module.exports = {
       repo: "https://github.com/kenyaachon/AdvancedExpressCourse",
       path: "/home/ubuntu/deploy",
       "post-deploy":
-        "cp ../.env ./ && npm install && pm2 startOrRestart ecosystem.config.js -env production",
+        "cp ../.env ./ && npm install && pm2 startOrRestart ecosystem.config.js --env production",
     },
   },
 };
